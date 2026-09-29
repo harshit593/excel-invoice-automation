@@ -1,0 +1,61 @@
+# Automated Invoice Generator (Excel + VBA)
+
+An Excel-based billing tool that auto-generates GST-compliant invoices from a dropdown-driven item list — built to eliminate manual rate lookup and calculation errors in small-business invoicing.
+
+## Problem
+
+Small traders and shopkeepers often build invoices manually in Excel — typing item names, rates, and quantities by hand every time, with no validation and no automatic calculation. This leads to typos, inconsistent pricing, and manual arithmetic errors in tax and totals.
+
+## Solution
+
+This workbook separates **data** from **presentation** across two sheets and automates the entire calculation chain:
+
+- A dropdown (data validation) restricts item entry to a maintained product list — no free-text typos
+- Selecting an item automatically pulls its rate via `VLOOKUP` — no manual price entry
+- Quantity × Rate auto-calculates the line amount
+- Subtotal, 5% GST, and final total are computed automatically as items are added
+- A VBA macro resets the invoice for a new customer in one click, without disturbing formulas or table formatting
+
+## Features
+
+| Feature | Implementation |
+|---|---|
+| Item dropdown validation | Excel Data Validation (list-based) on the Items column |
+| Auto rate lookup | `=IFERROR(VLOOKUP(A10,'Data sheet'!$A$2:$C$16,3,FALSE)," ")` |
+| Auto amount calculation | `=IFERROR(C10*E10,"  ")` |
+| Subtotal / GST / Total | `SUM()`, and `=SUBTOTAL*5%` for GST |
+| One-click reset | VBA macro using `.ClearContents` (preserves borders/formatting, unlike `.Clear`) |
+| Error-proofing | `IFERROR()` wraps every lookup/calculation so blank rows don't throw `#N/A` |
+
+## How it works
+
+1. **`Data sheet`** — a maintained master list of items with their standard rates (15 items: Notebook, Geometry Box, Ball Pen, etc.)
+2. **`INVOICE SHEET`** — the customer-facing invoice. Selecting an item from the dropdown in column A triggers the lookup chain that fills Quantity, Rate, and Amount automatically.
+3. **Clear Invoice macro** — wipes entered data (not formulas or formatting) so the sheet is ready for the next customer instantly.
+
+## A mistake I made and fixed (and what I learned)
+
+My first version of the VLOOKUP used an unlocked range (`'Data sheet'!A2:C16`), so when I copied the formula down, the lookup range shifted with it — meaning only the first few rows returned correct values, and everything below silently broke. Locking the range (`$A$2:$C$16`) fixed it. This taught me the difference between relative and absolute references in a very concrete way — not just "the F4 key locks cells," but *why* it matters the moment a formula gets copied.
+
+I also initially used `.Clear` in the reset macro, which wiped formatting along with the data — including the table borders. Switching to `.ClearContents` fixed it, since it only removes values/formulas and leaves formatting untouched.
+
+## Tech used
+
+- Microsoft Excel (formulas: `VLOOKUP`, `IFERROR`, `SUM`)
+- Data Validation (dropdown lists)
+- VBA (macro-based sheet reset)
+
+## Possible next steps
+
+- Add an inventory/stock-on-hand column that decrements as invoices are generated
+- Add invoice numbering that auto-increments per new invoice
+- Migrate the price list to a small Access/SQL table for multi-user use
+
+## Files
+
+- `Invoice_sheet.xlsm` — the working workbook (enable macros to use the reset button)
+- Screenshots below show a sample filled invoice
+
+---
+
+*Built as a self-directed project to practice Excel automation, formula debugging, and VBA — with an eye toward supply chain / operations tooling.*
