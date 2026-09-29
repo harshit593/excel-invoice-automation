@@ -31,7 +31,7 @@ This workbook separates **data** from **presentation** across two sheets and aut
 
 1. **`Data sheet`** — a maintained master list of items with their standard rates (15 items: Notebook, Geometry Box, Ball Pen, etc.)
 2. **`INVOICE SHEET`** — the customer-facing invoice. Selecting an item from the dropdown in column A triggers the lookup chain that fills Quantity, Rate, and Amount automatically.
-3. **Clear Invoice macro** — wipes entered data (not formulas or formatting) so the sheet is ready for the next customer instantly.
+3. **Clear Invoice macro** — wipes entered data (not formulas or formatting) so the sheet is ready for the next customer instantly(KEY-> CTRL+SHIFT+K).
 
 ## A mistake I made and fixed (and what I learned)
 
