@@ -27,6 +27,7 @@ This workbook separates **data** from **presentation** across two sheets and aut
 | One-click reset | VBA macro using `.ClearContents` (preserves borders/formatting, unlike `.Clear`) |
 | Error-proofing | `IFERROR()` wraps every lookup/calculation so blank rows don't throw `#N/A` |
 
+![Invoice Screenshot](Screenshot%20(318).png)
 ## How it works
 
 1. **`Data sheet`** — a maintained master list of items with their standard rates (15 items: Notebook, Geometry Box, Ball Pen, etc.)
